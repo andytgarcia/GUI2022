@@ -2,6 +2,7 @@ package com.example.gui2022;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,6 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -42,6 +46,8 @@ public class HelloController {
 
     boolean characterCreated = false;
 
+
+
     @FXML
     public void initialize() throws FileNotFoundException {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
@@ -49,9 +55,18 @@ public class HelloController {
         gc.setFont(font);
         nameField.setEditable(false);
         nameField.setVisible(false);
+        System.out.println("test");
+
+
+
+
+
         saveCharacterButton.setVisible(false);
 
         final Image image = new Image(new FileInputStream("src/main/resources/com/example/gui2022/guy.png"));
+
+
+
 
 
 
@@ -73,15 +88,28 @@ public class HelloController {
                 }
                 else {
                     gc.drawImage(image, 100, 100);
+                    ImageView imageView = new ImageView(image);
+                    //imageView.setOnKeyPressed();
+
+
+
+
                 }
             }
+
         };
 
         animTime.start();
 
-
-
     }
+
+
+
+
+
+
+
+
 
     @FXML
     protected void onHelloButtonClick() {
@@ -186,7 +214,7 @@ public class HelloController {
             if (b.getText().equals("Roll Again..."))
                 b.setVisible(false);
             else {
-                b.setText("Roll Again");
+                b.setText("Roll Again...");
                 b.setPrefSize(120, 30);
                 count++;
             }
@@ -195,6 +223,8 @@ public class HelloController {
         if (count >= 7)
             saveCharacterButton.setVisible(true);
     }//end onRollButton
+
+
 
 
 
