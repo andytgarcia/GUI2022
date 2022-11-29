@@ -18,8 +18,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Formatter;
 
 public class HelloController {
     @FXML
@@ -46,6 +49,8 @@ public class HelloController {
 
     boolean characterCreated = false;
 
+    private File characterFile;
+
 
 
     @FXML
@@ -62,6 +67,15 @@ public class HelloController {
 
 
         saveCharacterButton.setVisible(false);
+
+        characterFile = new File("character.deg");
+        if(!characterFile.exists()) {
+            try {
+                characterFile.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         final Image image = new Image(new FileInputStream("src/main/resources/com/example/gui2022/guy.png"));
 
@@ -102,7 +116,48 @@ public class HelloController {
         animTime.start();
 
     }
+    @FXML
+    protected void onSaveMenuClicked() throws FileNotFoundException{
+        Formatter output = new Formatter(characterFile);
 
+        output.format("%s, %s, %s, %s, %s, %s, %s", nameField.getText(), strengthValueLabel.getText(), dexterityValueLabel.getText(), intelligenceValueLabel.getText(),
+                constitutionValueLabel.getText(), charismaValueLabel.getText(), wisdomValueLabel.getText());
+        output.close();
+    }
+
+
+
+    @FXML
+    protected void movement(){
+        if(HelloApplication.currentlyActiveKeys.contains(KeyCode.A.toString())){
+            moveLeft();
+        }
+        if (HelloApplication.currentlyActiveKeys.contains(KeyCode.D.toString())) {
+            moveRight();
+        }
+        if (HelloApplication.currentlyActiveKeys.contains(KeyCode.S.toString())) {
+            moveDown();
+        }
+        if (HelloApplication.currentlyActiveKeys.contains(KeyCode.W.toString())) {
+            moveUp();
+        }
+    }
+
+    private void moveUp(){
+        y -= 1;
+    }
+
+    private void moveDown(){
+        y += 1;
+    }
+
+    private void moveRight(){
+        x += 1;
+    }
+
+    private void moveLeft(){
+        x -= 1;
+    }
 
 
 

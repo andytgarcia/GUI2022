@@ -1,33 +1,44 @@
 package com.example.gui2022;
-
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 public class HelloApplication extends Application {
+    Stage window;
+    static Scene scene;
+    static HashSet<String> currentlyActiveKeys;
+
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage primaryStage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
-        scene.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.W) {
-                System.out.println("W key was pressed");
+        scene = new Scene(fxmlLoader.load(), 800, 600);
+        window = primaryStage;
+        window.setTitle("Hello World");
+        window.setScene(scene);
+        prepareActionHandlers();
+        window.show();
+    }
+
+    private static void prepareActionHandlers() {
+        currentlyActiveKeys = new HashSet<String>();
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                currentlyActiveKeys.add(event.getCode().toString());
+
             }
-            else if (e.getCode() == KeyCode.S) {
-                System.out.println("S key was pressed");
-            }
-            else if (e.getCode() == KeyCode.A) {
-                System.out.println("A key was pressed");
-            }
-            else if (e.getCode() == KeyCode.D) {
-                System.out.println("D key was pressed");
+        });
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                currentlyActiveKeys.remove(event.getCode().toString());
+
             }
         });
     }
