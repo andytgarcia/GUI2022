@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Formatter;
+import java.util.Scanner;
 
 public class HelloController {
     @FXML
@@ -117,13 +118,32 @@ public class HelloController {
 
     }
     @FXML
-    protected void onSaveMenuClicked() throws FileNotFoundException{
-        Formatter output = new Formatter(characterFile);
-
-        output.format("%s, %s, %s, %s, %s, %s, %s", nameField.getText(), strengthValueLabel.getText(), dexterityValueLabel.getText(), intelligenceValueLabel.getText(),
-                constitutionValueLabel.getText(), charismaValueLabel.getText(), wisdomValueLabel.getText());
-        output.close();
+    protected void onSaveMenuClicked() throws FileNotFoundException {
+        File file = HelloApplication.openSaveDialog();
+        if (file != null) {
+            file = new File(file.getAbsolutePath() + ".deg");
+            Formatter output = new Formatter(file);
+            output.format("%s, %s, %s, %s, %s, %s, %s", nameField.getText(), strengthValueLabel.getText(), dexterityValueLabel.getText(), intelligenceValueLabel.getText(),
+                    constitutionValueLabel.getText(), charismaValueLabel.getText(), wisdomValueLabel.getText());
+            output.close();
+        }
     }
+
+    @FXML
+    protected void onLoadingDialogue() throws FileNotFoundException {
+        File file = HelloApplication.openLoadedDialog();
+        if (file != null) {
+            try (Scanner scanner = new Scanner(file)) {
+
+                while (scanner.hasNext())
+                    System.out.println(scanner.next());
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        }
 
 
 
