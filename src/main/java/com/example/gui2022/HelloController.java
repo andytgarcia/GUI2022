@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
 
@@ -133,17 +134,37 @@ public class HelloController {
     protected void onLoadingDialogue() throws FileNotFoundException {
         File file = HelloApplication.openLoadedDialog();
         if (file != null) {
+            ArrayList<String> listOfAttributes = new ArrayList<>();
             try (Scanner scanner = new Scanner(file)) {
 
-                while (scanner.hasNext())
-                    System.out.println(scanner.next());
-
+                while (scanner.hasNext()) {
+                    listOfAttributes.add(scanner.next());
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-        }
+            System.out.println(listOfAttributes);
+            for (int i = 0; i < listOfAttributes.size(); i++) {
+                if (listOfAttributes.get(i).contains(","))
+                    removeCommas(listOfAttributes.get(i));
+            }
+            nameLabel.setText(listOfAttributes.get(0));
+            strengthValueLabel.setText(listOfAttributes.get(1));
+            dexterityValueLabel.setText(listOfAttributes.get(2));
+            intelligenceValueLabel.setText(listOfAttributes.get(3));
+            constitutionValueLabel.setText(listOfAttributes.get(4));
+            charismaValueLabel.setText(listOfAttributes.get(5));
+            wisdomValueLabel.setText(listOfAttributes.get(6));
 
         }
+
+
+
+    }
+
+    private String removeCommas(String s) {
+        return s.substring(0, s.length() -1);
+    }
 
 
 
