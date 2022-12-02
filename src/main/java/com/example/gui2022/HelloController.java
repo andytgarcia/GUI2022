@@ -53,6 +53,11 @@ public class HelloController {
 
     private File characterFile;
 
+    //public GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+    //final Image image = new Image(new FileInputStream("src/main/resources/com/example/gui2022/guy.png"));
+
+
+
 
 
     @FXML
@@ -78,8 +83,9 @@ public class HelloController {
                 throw new RuntimeException(e);
             }
         }
-
         final Image image = new Image(new FileInputStream("src/main/resources/com/example/gui2022/guy.png"));
+
+        
 
 
 
@@ -149,12 +155,14 @@ public class HelloController {
                     removeCommas(listOfAttributes.get(i));
             }
             nameLabel.setText(listOfAttributes.get(0));
+            nameField.setText(listOfAttributes.get(0));
             strengthValueLabel.setText(listOfAttributes.get(1));
             dexterityValueLabel.setText(listOfAttributes.get(2));
             intelligenceValueLabel.setText(listOfAttributes.get(3));
             constitutionValueLabel.setText(listOfAttributes.get(4));
             charismaValueLabel.setText(listOfAttributes.get(5));
             wisdomValueLabel.setText(listOfAttributes.get(6));
+            //find way to draw image
 
         }
 
@@ -163,7 +171,7 @@ public class HelloController {
     }
 
     private String removeCommas(String s) {
-        return s.substring(0, s.length() -1);
+        return s.substring(0, s.indexOf(","));
     }
 
 
