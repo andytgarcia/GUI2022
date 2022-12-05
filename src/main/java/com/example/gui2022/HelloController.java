@@ -37,7 +37,7 @@ public class HelloController {
 
     @FXML
     private Label nameLabel;
-    int x = 100, y = 100;
+    int x = 100, y = 100, x1 = 100, y1 = 100;
 
     @FXML
     private Button saveCharacterButton, strengthRollButton, dexterityRollButton, intelligenceRollButton, constitutionRollButton, charismaRollButton, wisdomRollButton;
@@ -50,6 +50,8 @@ public class HelloController {
     boolean characterCreated = false;
 
     private File characterFile;
+
+    Player player;
 
     //public GraphicsContext gc = gameCanvas.getGraphicsContext2D();
     //final Image image = new Image(new FileInputStream("src/main/resources/com/example/gui2022/guy.png"));
@@ -67,26 +69,9 @@ public class HelloController {
         nameField.setVisible(false);
         System.out.println("test");
 
-
-
-
-
         saveCharacterButton.setVisible(false);
 
-        characterFile = new File("character.deg");
-        if(!characterFile.exists()) {
-            try {
-                characterFile.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        final Image image = new Image(new FileInputStream("src/main/resources/com/example/gui2022/guy.png"));
-
-        
-
-
-
+        player = new Player("guy.png", 100, 100);
 
 
 
@@ -107,13 +92,9 @@ public class HelloController {
 
                 }
                 else {
-                    gc.drawImage(image, 100, 100);
-                    ImageView imageView = new ImageView(image);
-                    //imageView.setOnKeyPressed();
-
-
-
-
+                    movement();
+                    player.testCollision(gc);
+                    player.draw(gc);
                 }
             }
 
@@ -157,12 +138,27 @@ public class HelloController {
 
             nameLabel.setText(sep[0]);
             nameField.setText(sep[0]);
+            editNameButton.setVisible(false);
+
             strengthValueLabel.setText(sep[1]);
+            strengthRollButton.setVisible(false);
+
             dexterityValueLabel.setText(sep[2]);
+            dexterityRollButton.setVisible(false);
+
             intelligenceValueLabel.setText(sep[3]);
+            intelligenceRollButton.setVisible(false);
+
             constitutionValueLabel.setText(sep[4]);
+            constitutionRollButton.setVisible(false);
+
             charismaValueLabel.setText(sep[5]);
+            charismaRollButton.setVisible(false);
+
             wisdomValueLabel.setText(sep[6]);
+            wisdomRollButton.setVisible(false);
+
+            characterCreated = true;
             //find way to draw image
 
 
@@ -172,36 +168,21 @@ public class HelloController {
 
 
     }
+
     @FXML
     protected void movement(){
         if(HelloApplication.currentlyActiveKeys.contains(KeyCode.A.toString())){
-            moveLeft();
+            player.moveLeft();
         }
         if (HelloApplication.currentlyActiveKeys.contains(KeyCode.D.toString())) {
-            moveRight();
+            player.moveRight();
         }
         if (HelloApplication.currentlyActiveKeys.contains(KeyCode.S.toString())) {
-            moveDown();
+            player.moveDown();
         }
         if (HelloApplication.currentlyActiveKeys.contains(KeyCode.W.toString())) {
-            moveUp();
+            player.moveUp();
         }
-    }
-
-    private void moveUp(){
-        y -= 1;
-    }
-
-    private void moveDown(){
-        y += 1;
-    }
-
-    private void moveRight(){
-        x += 1;
-    }
-
-    private void moveLeft(){
-        x -= 1;
     }
 
 

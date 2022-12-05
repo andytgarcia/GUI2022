@@ -28,6 +28,7 @@ public class HelloApplication extends Application {
         window.setTitle("Hello World");
         window.setScene(scene);
         prepareActionHandlers();
+
         window.show();
     }
 
