@@ -18,11 +18,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Scanner;
 
@@ -131,7 +129,7 @@ public class HelloController {
             file = new File(file.getAbsolutePath() + ".deg");
             Formatter output = new Formatter(file);
             output.format("%s, %s, %s, %s, %s, %s, %s", nameField.getText(), strengthValueLabel.getText(), dexterityValueLabel.getText(), intelligenceValueLabel.getText(),
-                    constitutionValueLabel.getText(), charismaValueLabel.getText(), wisdomValueLabel.getText());
+                    constitutionValueLabel.getText(), wisdomValueLabel.getText(), charismaValueLabel.getText());
             output.close();
         }
     }
@@ -139,43 +137,41 @@ public class HelloController {
     @FXML
     protected void onLoadingDialogue() throws FileNotFoundException {
         File file = HelloApplication.openLoadedDialog();
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader bufferedReader = null;
         if (file != null) {
-            ArrayList<String> listOfAttributes = new ArrayList<>();
-            try (Scanner scanner = new Scanner(file)) {
-
-                while (scanner.hasNext()) {
-                    listOfAttributes.add(scanner.next());
+            try  {
+                bufferedReader = new BufferedReader(new FileReader(file));
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line);
                 }
-            } catch (FileNotFoundException e) {
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(listOfAttributes);
-            for (int i = 0; i < listOfAttributes.size(); i++) {
-                if (listOfAttributes.get(i).contains(","))
-                    removeCommas(listOfAttributes.get(i));
-            }
-            nameLabel.setText(listOfAttributes.get(0));
-            nameField.setText(listOfAttributes.get(0));
-            strengthValueLabel.setText(listOfAttributes.get(1));
-            dexterityValueLabel.setText(listOfAttributes.get(2));
-            intelligenceValueLabel.setText(listOfAttributes.get(3));
-            constitutionValueLabel.setText(listOfAttributes.get(4));
-            charismaValueLabel.setText(listOfAttributes.get(5));
-            wisdomValueLabel.setText(listOfAttributes.get(6));
+            String content = stringBuilder.toString();
+            String[] sep = content.split(",");
+            System.out.println(Arrays.toString(sep));
+
+
+            nameLabel.setText(sep[0]);
+            nameField.setText(sep[0]);
+            strengthValueLabel.setText(sep[1]);
+            dexterityValueLabel.setText(sep[2]);
+            intelligenceValueLabel.setText(sep[3]);
+            constitutionValueLabel.setText(sep[4]);
+            charismaValueLabel.setText(sep[5]);
+            wisdomValueLabel.setText(sep[6]);
             //find way to draw image
+
+
 
         }
 
 
 
     }
-
-    private String removeCommas(String s) {
-        return s.substring(0, s.indexOf(","));
-    }
-
-
-
     @FXML
     protected void movement(){
         if(HelloApplication.currentlyActiveKeys.contains(KeyCode.A.toString())){
